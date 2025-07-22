@@ -1,11 +1,9 @@
-import React from 'react'
-import { useState } from 'react'
 
-const SearchBar = () => {
-    const [input, setInput] = useState('')
+const SearchBar = ({input, setInput, isDark}) => {
+
   return (
     <div>
-      <input  className='w-[400px] p-2 rounded-md shadow-md'
+      <input  className={`w-[400px] p-2 ${isDark ? 'border' : ''} rounded-md shadow-md`}
       type="text"
       placeholder='Search'
       value={input}

@@ -1,10 +1,15 @@
-import React from 'react'
 
-const Navbar = () => {
+const Navbar = ({handleDarkMode, isDark}) => {
+
+
   return (
-    <div className='shadow-md flex flex-row justify-between items-center p-4'>
+    <div className={`shadow-md ${isDark ? 'bg-black text-white' : ''} flex flex-row justify-between items-center p-4 `} >
       <h1 className='text-2xl font-bold'>Where in the Word?</h1>
-       <button className='border px-2 rounded-md'>Dark Mode</button>
+       <button onClick={handleDarkMode} className='border px-2 rounded-md'>
+        {
+          isDark ? <i className="ri-moon-fill"></i>  : <i className="ri-sun-fill"></i>
+        }
+       </button>
     </div>
   )
 }
