@@ -3,7 +3,6 @@ import { nanoid } from 'nanoid';
 import Test from "./components/Test";
 function App() {
 
-
   const [tasks, setTasks] = useState([])
   const [currentInputTask, setCurrentTask] = useState('')
   const [isRunning, setIsRunning] = useState(false)
@@ -16,7 +15,6 @@ function App() {
     setTasks(savedTasks)
   }, [])
 
-
   // save tasks to localestorage
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks))
@@ -27,11 +25,11 @@ function App() {
       const allTasks = await JSON.parse(localStorage.getItem('tasks')) || []
       allTasks.push({ name: currentInputTask, _id: nanoid(), startTime: seconds, completedTime: 0, totalTime: 0, isCompleted: false })
       setTasks(allTasks)
-      handleStart()
+      if (!isRunning) {
+        handleStart()
+      }
       setCurrentTask('')
     }
-    // setTasks(prev => [...prev, { name: currentInputTask, _id: nanoid(), startTime: seconds, completedTime: 0, totalTime: 0, isCompleted: false }])
-
   }
 
   //Time Effect
@@ -57,12 +55,12 @@ function App() {
   const handleReset = useCallback(() => {
     clearInterval(IntervalRef.current)
     setSeconds(0)
+    setIsRunning(false)
   }, [])
-
 
   const handleTaskCompleted = (id) => {
     const updatedTasks = tasks.map(task => {
-      if (task._id === id && task.isCompleted === false) {
+      if (task._id === id) {
         console.log("task Completed");
         return { ...task, isCompleted: true, completedTime: seconds, totalTime: (seconds - task.startTime) }
       }
@@ -102,15 +100,18 @@ function App() {
             {
 
               tasks.map(task => (
-                <div className="flex flex-row justify-between items-center border rounded-md p-4 m-4 " key={Math.random()}>
+                <div className="flex flex-row justify-between items-center border rounded-md p-4 m-4 " key={task._id}>
                   <div>
-                  <li className=" mb-2">Task: {task.name}</li>
-                  <h1  className="text-sm text-slate-400 ">Start Time: {task.startTime}</h1>
-                  <h1 className="text-sm text-slate-400 ">Completed Time: {task.isCompleted ? task.completedTime : 'Running' }</h1>
-                  <h1 className="text-sm text-slate-400 ">Status: {task.isCompleted ? 'Completed' : 'Running' }</h1>
+                    <li className=" mb-2">Task: {task.name}</li>
+                    <h1 className="text-sm text-slate-400 ">Start Time: {task.startTime}</h1>
+                    <h1 className="text-sm text-slate-400 ">Completed Time: {task.isCompleted ? task.completedTime : 'Running'}</h1>
+                    <h1 className="text-sm text-slate-400 ">Status: {task.isCompleted ? 'Completed' : 'Running'}</h1>
                   </div>
-                 
-                  <button className={` text-sm font-bold px-2 rounded-md ${task.isCompleted ? 'text-white bg-green-500' : 'text-black bg-white'}`} onClick={() => handleTaskCompleted(task._id)}>
+
+                  <button className={` text-sm font-bold px-2 rounded-md ${task.isCompleted ? 'text-white bg-green-500' : 'text-black bg-white'}`}
+                    onClick={() => handleTaskCompleted(task._id)}
+                    disabled={task.isCompleted}
+                    >
                     {task.isCompleted ? 'Completed' : 'Complete'}
                   </button>
                 </div>
@@ -118,7 +119,6 @@ function App() {
             }
           </ul>
         </div>
-
       </div>
     </>
   );
