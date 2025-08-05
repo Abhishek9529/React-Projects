@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react"
+import { createContext, useCallback, useEffect, useState } from "react"
 import Form from "./components/Form"
 
 const ThemeContext = createContext();
@@ -9,12 +9,12 @@ function App() {
   useEffect(() => {
     const theme = JSON.parse(localStorage.getItem('theme'))
     setTheme(theme)
-  })
+  }, [])
 
-  const StorePreviousTheme = () => {
+  const StorePreviousTheme = useCallback(() => {
     setTheme(!isDark)
     localStorage.setItem('theme', JSON.stringify(!isDark))
-  }
+  },[isDark])
 
   return (
     <ThemeContext.Provider value={isDark}>

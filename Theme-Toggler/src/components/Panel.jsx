@@ -1,10 +1,7 @@
 import { useContext } from 'react'
 import {ThemeContext} from '../App'
 
-
 const Panel = ({ title, children }) => {
-    // console.log('in panel:', ThemeContext);
-    
     const isDark = useContext(ThemeContext);
     return (
         <section className={`space-y-2 space ${isDark ? 'bg-black text-white' : 'bg-white'} p-2`} >
