@@ -59,7 +59,7 @@ function App() {
       <div className="w-full h-screen flex flex-row justify-center items-center">
         <div className="border w-[370px] h-[400px] p-4 rounded-md flex flex-col justify-center items-center gap-4">
           <div>
-            Total Balance : {totalAmount}
+            Total Expense : {totalAmount}
           </div>
           <div className="">
             <ul className=" space-y-2 h-[200px]  overflow-y-auto ">

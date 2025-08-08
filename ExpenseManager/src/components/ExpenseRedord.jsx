@@ -1,14 +1,16 @@
+import { useCallback } from "react"
+
 const ExpenseRedord = ({ title, amount, amountType, id, setAllRecords }) => {
 
     // delete expense record on delete button click
-    const handleDelete = (id) => {
-        const allRecords = JSON.parse(localStorage.getItem('expenseRecorde')) || []
-        const index = allRecords.findIndex((record) => record._id === id)
-        allRecords.splice(index, 1)
-        localStorage.setItem('expenseRecorde', JSON.stringify(allRecords))
-        setAllRecords(allRecords)
-    }
-    
+    const handleDelete = useCallback((id) => {
+            const allRecords = JSON.parse(localStorage.getItem('expenseRecorde')) || []
+            const index = allRecords.findIndex((record) => record._id === id)
+            allRecords.splice(index, 1)
+            localStorage.setItem('expenseRecorde', JSON.stringify(allRecords))
+            setAllRecords(allRecords)
+        },[])
+
     return (
         <li className="  flex flex-row justify-between items-center space-x-4 border px-2 py-1  rounded"  >
             <div className=" w-[200px]  flex flex-row justify-between items-center ">
