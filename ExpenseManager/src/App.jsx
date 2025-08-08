@@ -1,7 +1,7 @@
 import ExpenseRedord from "./components/ExpenseRedord"
 import ExpenseInput from "./components/ExpenseInput"
 import { nanoid } from 'nanoid'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 
 
 function App() {
@@ -11,6 +11,7 @@ function App() {
   const [amountType, setAmountType] = useState('')
   const [totalAmount, setTotalAmount] = useState(0)
 
+  // load expense records from initial render
   useEffect(() => {
     const records = JSON.parse(localStorage.getItem('expenseRecorde')) || []
     if (records) {
@@ -18,35 +19,39 @@ function App() {
     }
   }, [])
 
-  useEffect(() => {
+  //  update total balance 
+  useMemo(() => {
     const records = JSON.parse(localStorage.getItem('expenseRecorde')) || []
     const incomeRec = records.filter((record) => record.amountType === 'income')
-    let total = 0
+    const expenseRec = records.filter((record) => record.amountType === 'expense')
+    let totalExpense = 0
+    let totalIncome = 0
     incomeRec.map((record) => {
-
-      total += Number(record.amount)
+      totalIncome += Number(record.amount)
     })
-    setTotalAmount(total)
+    expenseRec.map((record) => {
+      totalExpense -= Number(record.amount)
+    })
+    setTotalAmount(totalIncome + totalExpense)
   }, [allRecords])
 
 
-  const handleAddExpense = () => {
+  // add expense record (obj) in localeStorage and allRecords array 
+  const handleAddExpense = useCallback(() => {
 
     if (!title || !amount || !amountType) {
       alert('please enter all feilds...')
       return;
     }
+    const record = { title, amount, amountType, _id: nanoid() }
 
-    const record = {
-      title,
-      amount,
-      amountType,
-      _id: nanoid()
-    }
     const setRecordes = [record, ...allRecords]
+
     localStorage.setItem('expenseRecorde', JSON.stringify(setRecordes))
     setAllRecords(setRecordes)
-  }
+    setTitle('')
+    setAmount('')
+  }, [title, amount, amountType])
 
 
   return (
@@ -56,12 +61,20 @@ function App() {
           <div>
             Total Balance : {totalAmount}
           </div>
-
-          {/* <div>
-            <ul className="space-y-2 h-[200px]  overflow-auto">
-              <ExpenseRedord/>
+          <div className="">
+            <ul className=" space-y-2 h-[200px]  overflow-y-auto ">
+              {allRecords &&
+                allRecords.map(record => (
+                  <ExpenseRedord key={record._id}
+                    title={record.title}
+                    amount={record.amount}
+                    amountType={record.amountType}
+                    id={record._id}
+                    setAllRecords={setAllRecords}
+                  />
+                ))}
             </ul>
-          </div> */}
+          </div>
 
           <div >
             <ExpenseInput
@@ -71,13 +84,12 @@ function App() {
               setTitle={setTitle}
               setAmount={setAmount}
               setAmountType={setAmountType}
+              title={title}
+              amount={amount}
             />
           </div>
-
-
         </div>
       </div>
-
     </>
   )
 }
