@@ -11,13 +11,31 @@ function App() {
   const [amountType, setAmountType] = useState('')
   const [totalAmount, setTotalAmount] = useState(0)
 
+  // set Local data
+  const setLocalData = (setRecordes) =>{
+    localStorage.setItem('expenseRecorde', JSON.stringify(setRecordes))
+  }
+
+  //get Local data
+  const getLocalData = ()=>{
+     return JSON.parse(localStorage.getItem('expenseRecorde')) || []
+  }
+
   // load expense records from initial render
   useEffect(() => {
-    const records = JSON.parse(localStorage.getItem('expenseRecorde')) || []
-    if (records) {
+    const records = getLocalData()
       setAllRecords(records)
-    }
   }, [])
+
+  // update records
+  const updateRecords =(newRecords)=>{
+    setAllRecords(newRecords)
+  }
+
+  // update locale storage 
+  useEffect(()=>{
+   setLocalData(allRecords)
+  },[allRecords])
 
   //  update total balance 
   useMemo(() => {
@@ -38,17 +56,15 @@ function App() {
 
   // add expense record (obj) in localeStorage and allRecords array 
   const handleAddExpense = useCallback(() => {
-
-    if (!title || !amount || !amountType) {
+    if (!title.trim() || isNaN(amount) || Number(amount) <= 0 || !amountType) {
       alert('please enter all feilds...')
       return;
     }
     const record = { title, amount, amountType, _id: nanoid() }
 
     const setRecordes = [record, ...allRecords]
+    updateRecords(setRecordes)
 
-    localStorage.setItem('expenseRecorde', JSON.stringify(setRecordes))
-    setAllRecords(setRecordes)
     setTitle('')
     setAmount('')
   }, [title, amount, amountType])
@@ -58,7 +74,7 @@ function App() {
     <>
       <div className="w-full h-screen flex flex-row justify-center items-center">
         <div className="border w-[370px] h-[400px] p-4 rounded-md flex flex-col justify-center items-center gap-4">
-          <div>
+          <div className={`${totalAmount < 0 ? 'text-red-500' : 'text-green-500'}`}>
             Total Expense : {totalAmount}
           </div>
           <div className="">
