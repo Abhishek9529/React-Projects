@@ -17,11 +17,20 @@ function App() {
   const [amount, setAmount] = useState(0)
   const [amountType, setAmountType] = useState('')
 
+  // delete expense record on delete button click
+  const handleDelete = useCallback((id) => {
+    setAllRecords(prev => prev.filter(record => record._id !== id));
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('expenseRecorde', JSON.stringify(allRecords))
+  }, [allRecords])
+
   //get Local data
-  const getLocalData = useCallback(() => {
+  const getLocalData = () => {
     console.log('this is getLocaleData Function');
     return JSON.parse(localStorage.getItem('expenseRecorde')) || []
-  }, [])
+  }
 
   // load expense records from initial render
   useEffect(() => {
@@ -45,7 +54,6 @@ function App() {
     // set records to the allrecords 
     setAllRecords(prev => {
       const newRecordes = [record, ...prev]
-      localStorage.setItem('expenseRecorde', JSON.stringify(newRecordes))
       return newRecordes;
     });
     setTitle('')
@@ -69,6 +77,7 @@ function App() {
                     amountType={record.amountType}
                     id={record._id}
                     setAllRecords={setAllRecords}
+                    onDelete={handleDelete}
                   />
                 ))}
             </ul>
