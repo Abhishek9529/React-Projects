@@ -12,7 +12,7 @@ const Login = () => {
     }
 
   return (
-    <div className='flex h-screen w-screen items-center justify-center'>
+    <div className='flex flex-row w-full h-screen items-center justify-center'>
      <div className='border-2 border-blue-600 rounded-xl'>
        <form
        onSubmit={(e) => submitHandler(e)}
