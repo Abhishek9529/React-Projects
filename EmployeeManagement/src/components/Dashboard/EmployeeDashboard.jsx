@@ -9,8 +9,8 @@ const EmployeeDashboard = ({data}) => {
   return (
     <div>
       <Header data={data}/>
-       <TaskListNumbers/>
-      <TaskList/>
+       <TaskListNumbers data={data}/>
+      <TaskList data={data}/>
      
     </div>
   )

@@ -10,7 +10,7 @@ import { AuthContext } from "./context/AuthProvider"
 
 function App() {
   const authData = useContext(AuthContext)
-  const [user, setUser] = useState('')
+  const [user, setUser] = useState(null)
   const [loggedInUserData, setLoggedInUserData] = useState({})
   
 
@@ -22,12 +22,13 @@ function App() {
       }
     }
   },[user])
-  
+
 
   const handleLogin = (email, password) => {
 
     if (email === 'admin@gmail.com' && password === '123') {
       setUser('admin')
+      // setLoggedInUserData({data: {firstname: "Admin"}})
       localStorage.setItem('loggedInUser', JSON.stringify({role:'admin'}))
     } else if (authData !== '') {
     const employee =  authData.employees.find((emp)=> emp.email == email && emp.password == password )
@@ -45,7 +46,7 @@ function App() {
     <>
       <div className="px-10 pt-10">
         {!user ? <Login handleLogin={handleLogin} /> : ''}
-        {user == 'admin' ? <AdminDashboard /> : user == 'employee' ? <EmployeeDashboard data={loggedInUserData} /> : '' }
+        {user == 'admin' ? <AdminDashboard  data={loggedInUserData}/> : user == 'employee' ? <EmployeeDashboard data={loggedInUserData} /> : '' }
 
       </div>
 
