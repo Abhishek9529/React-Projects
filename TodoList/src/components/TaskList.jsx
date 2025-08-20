@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import { TaskContext } from '../context/TaskContext'
 
 const TaskList = () => {
+    console.log('render TaskList comp');
     const { allTasks, filterType } = useContext(TaskContext)
 
     let filteredTasks = []

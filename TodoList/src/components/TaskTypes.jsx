@@ -1,8 +1,8 @@
-import React from 'react'
 import { useContext } from 'react'
 import { TaskContext } from '../context/TaskContext'
 
 const TaskTypes = () => {
+    console.log('render TaskTypes comp');
     const {setFilterType, filterType} = useContext(TaskContext)
     return (
         <div className="w-full flex flex-row items-center justify-between gap-2">

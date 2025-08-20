@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { TaskContext } from '../context/TaskContext'
 
 const Task = ({ taskName, id, active, completed }) => {
+    console.log('render Task comp');
     const { DeleteSingleTask, CompleteTask } = useContext(TaskContext)
     return (
         <div className={`w-full border px-3 py-1 rounded-xl flex shadow-md ${completed ? 'border-[#8a2be1]' : 'border-[#f6f5fa]'}`}>

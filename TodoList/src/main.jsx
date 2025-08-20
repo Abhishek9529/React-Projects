@@ -5,9 +5,9 @@ import App from './App.jsx'
 import TaskProvider from './components/TaskProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
     <TaskProvider>
        <App />
-    </TaskProvider>
-  </StrictMode>,
+    </TaskProvider>,
+  {/* </StrictMode>, */}
 )
