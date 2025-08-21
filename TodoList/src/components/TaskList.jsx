@@ -1,10 +1,9 @@
-import React from 'react'
 import Task from './Task'
 import { useContext } from 'react'
 import { TaskContext } from '../context/TaskContext'
 
 const TaskList = () => {
-    console.log('render TaskList comp');
+
     const { allTasks, filterType } = useContext(TaskContext)
 
     let filteredTasks = []
@@ -18,7 +17,7 @@ const TaskList = () => {
 
     return (
         <div>
-            <ul id='taskList' className="space-y-2 h-[120px] overflow-auto">
+            <ul className="space-y-2 h-[120px] overflow-auto">
                 {filteredTasks.length === 0 ? (
                     <p className="text-gray-400">No tasks available</p>
                 ) : (

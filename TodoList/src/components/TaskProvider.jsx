@@ -1,30 +1,25 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { TaskContext } from '../context/TaskContext'
 
 const TaskProvider = ({ children }) => {
-    console.log('render TaskProvider comp');
+
     const [allTasks, setAllTasks] = useState([])
     const [filterType, setFilterType] = useState('all')
 
-    const AddTask = (task) => {
-        console.log('1. this fun add task ');
+    const AddTask = useCallback((task) => {
         setAllTasks((prev) => [task, ...prev])
-    }
+    }, [])
 
-    const DeleteAllTasks = () => {
-        console.log('2. this fun delete all all task ');
+    const DeleteAllTasks = useCallback(() => {
         setAllTasks([])
-    }
+    }, [])
 
-    const DeleteSingleTask = (id) => {
-        console.log('3. this fun delete single task ');
+    const DeleteSingleTask = useCallback((id) => {
         const filteredTasks = allTasks.filter((task) => task.id !== id)
         setAllTasks(filteredTasks)
-    }
+    }, [])
 
     const CompleteTask = (id) => {
-        console.log('4. this fun completed task ');
-        // console.log(allTasks);
         const updatedTasks = allTasks.map((task) => {
             if (task.id === id) {
                 return { ...task, completed: !task.completed }
@@ -32,13 +27,12 @@ const TaskProvider = ({ children }) => {
             return task
         })
         setAllTasks(updatedTasks)
-        // console.log(updatedTasks);
     }
 
     // filter display tasks 
 
 
-    const value = useMemo(()=>({
+    const value = useMemo(() => ({
         allTasks,
         AddTask,
         DeleteAllTasks,
@@ -46,7 +40,7 @@ const TaskProvider = ({ children }) => {
         CompleteTask,
         filterType,
         setFilterType,
-    }), [allTasks]);
+    }), [allTasks, filterType]);
 
     return (
         <TaskContext.Provider value={value}>
