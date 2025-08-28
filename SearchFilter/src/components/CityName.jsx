@@ -1,11 +1,8 @@
 import React from 'react'
 
-const CityName = ({country}) => {
+const CityName = ({countryName}) => {
   return (
-    <div >
-      <h1>{country}</h1>
-    </div>
+        <li className='border px-2 py-1 rounded-md mb-2 '>{countryName}</li>
   )
 }
-
 export default CityName

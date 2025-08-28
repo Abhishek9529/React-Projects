@@ -2,10 +2,11 @@ import CountryList from "../CountryList";
 import { useEffect, useMemo, useState } from "react";
 import CityName from "./components/CityName";
 
+
 function App() {
   const [inputCountry, setInputCountry] = useState('')
   const [countries, setCountries] = useState([])
-  const [searchedCountry, setSearchedCountry] = useState('')
+  const [searchedCountry, setSearchedCountry] = useState([])
 
   const findCity = useMemo(() => {
     if (inputCountry.includes(' ')) return
@@ -25,14 +26,18 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col w-full  h-screen items-center justify-center p-4 bg-gray-500 space-y-4">
+      <div className="flex flex-col w-full  h-screen  items-center pt-20 p-4 bg-gray-800 text-white space-y-4">
         <input className="border outline-none p-4 rounded-lg"
           value={inputCountry}
           onChange={e => setInputCountry(e.target.value)}
           type="text" placeholder="Enter valid city name..." />
-        <div className='border rounded-lg p-4 m-2'>
-          <CityName country={searchedCountry} />
-        </div>
+        <ul className=" h-[560px] overflow-y-auto ">
+          {
+            searchedCountry.map((country) => (
+              <CityName countryName={country} />
+            ))
+          }
+        </ul>
       </div>
     </>
   )
